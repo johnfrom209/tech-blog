@@ -30,7 +30,7 @@ Comment.init(
             }
         },
         date: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false
         },
         post_text: {
