@@ -27,7 +27,7 @@ const postData = [
     },
     {
         user_id: 1,
-        post_title: "Unfortuneately",
+        post_title: "Unfortunately",
         post_text: "New produt will have to wait another month for release.",
         date: "2022-11-05"
     },
