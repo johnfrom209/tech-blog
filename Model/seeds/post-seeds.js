@@ -33,6 +33,6 @@ const postData = [
     },
 ]
 
-const seedPost = () => Post.bulCreate(postData);
+const seedPost = () => Post.bulKCreate(postData);
 
 module.exports = seedPost;

@@ -12,10 +12,19 @@ User.init(
             autoIncrement: true
         },
         user_name: {
-            type: DataTypes.TEXT,
+            type: DataTypes.STRING,
             uniqe: true,
             isAlphaNumeric: true,
             allowNull: false,
+        },
+        user_email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                isEmail: true,
+                len: [3]
+            }
         },
         user_password: {
             type: DataTypes.STRING,

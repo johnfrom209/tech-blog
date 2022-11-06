@@ -18,6 +18,6 @@ const seedAll = async () => {
     console.log('\n------------COMMENTS SEEDED---------');
 
     process.exit(0);
-}
+};
 
 seedAll();
