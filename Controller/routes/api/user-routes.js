@@ -34,11 +34,21 @@ router.get('/:id', async (req, res) => {
 })
 
 // create user
+// {
+//   "user_name": "Test Test",
+//   "user_email": "Test@test.com",
+//   "user_password": "testingtester" 
+// }
 router.post('/', async (req, res) => {
 
     try {
         //create the user with req.body
-        const userData = await User.create(req.body);
+        const userData = await User.create(req.body, {
+            user_name: req.body.user_name,
+            user_email: req.body.user_email,
+            user_password: req.body.user_password
+        });
+        res.status(200).json(`Successfully Added`)
     } catch (err) {
         res.status(500).json(err);
     }
@@ -55,10 +65,16 @@ router.put('/:id', async (req, res) => {
 })
 
 // delete user
-router.delete('/', async (req, res) => {
+router.delete('/:id', async (req, res) => {
 
     try {
-
+        const userData = await User.destroy(
+            { where: { id: req.params.id } }
+        );
+        if (!userData) {
+            res.status(404).json("Not Found")
+        }
+        res.status(200).json("Succesfully Deleted!");
     } catch (err) {
         res.status(500).json(err);
     }
