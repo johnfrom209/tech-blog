@@ -35,6 +35,20 @@ User.init(
         },
     },
     {
+        // When adding hooks via the init() method, they go below
+        hooks: {
+            // Use the beforeCreate hook to work with data before a new instance is created
+            beforeCreate: async (newUserData) => {
+                // In this case, we are taking the user's email address, and making all letters lower case before adding it to the database.
+                newUserData.user_email = await newUserData.user_email.toLowerCase();
+                return newUserData;
+            },
+            // Here, we use the beforeUpdate hook to make all of the characters lower case in an updated email address, before updating the database.
+            beforeUpdate: async (updatedUserData) => {
+                updatedUserData.user_email = await updatedUserData.user_email.toLowerCase();
+                return updatedUserData;
+            },
+        },
         sequelize,
         freezeTableName: true, //stops the sequelize from pluralrizing the table name
         underscored: true, //snakecase 
