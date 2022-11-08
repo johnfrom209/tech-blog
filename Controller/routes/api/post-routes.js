@@ -11,12 +11,6 @@ router.get('/', async (req, res) => {
             include: [{ model: User }, { model: Comment }]
         })
 
-        // const posts = postData.map((post) => post.get({ plain: true }));
-
-        // //gives handlebar the posts from the db
-        // res.render('homepage', {
-        //     posts
-        // });
         res.status(200).json(postData)
     } catch (err) {
         res.status(500).json(err);
