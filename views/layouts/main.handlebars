@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/jass.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Blogs4Tech</title>
+</head>
+<body class="">
+
+<nav class="col-12 display-inline-block">
+    <div class="align-left display-inline-block">
+        <h1>Blogs4Tech</h1>
+    </div>
+    <div class="display-inline-block align-right justify-flex-end">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Dashboard</a></li>
+            {{!-- <li><button class="btn" id="home">Home</button></li>
+            <li><button class="btn" id="Dashboard">Dashboard</button></li> --}}
+            {{#if logged_in}}
+            <li><a href="#">Logout</a></li>
+            {{!-- <li><button class="btn" id="logout">Logout</button></li> --}}
+            {{else}}
+            <li><a href="/login">Login</a></li>
+            {{!-- <li><button class="btn" id="login">Login</button></li> --}}
+            {{/if}}
+        </ul>
+    </div>
+</nav>
+
+    {{{body}}}
+
+
+    
+</body>
+</html>

@@ -44,18 +44,15 @@ router.post('/', async (req, res) => {
 
     try {
         //create the user with req.body
-        // but first we need to hash the password
-        const newUser = req.body;
-        // console.log(newUser);
 
-        newUser.user_password = await bcrypt.hash(req.body.user_password, 10);
-        console.log(newUser);
+        if (req.body.user_password > 8) {
+            res.status(403).json("Password is not long enough");
+            return;
+        }
 
-        const userData = await User.create(newUser, {
-            user_name: newUser.user_name,
-            user_email: newUser.user_email,
-            user_password: newUser.user_password
-        });
+        const userData = await User.create(req.body);
+
+        console.log(userData.user_password);
 
         res.status(200).json(`Successfully Added`)
     } catch (err) {

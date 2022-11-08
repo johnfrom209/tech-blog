@@ -1,0 +1,9 @@
+.blog_c {
+    width: 75%;
+    display: block;
+    margin: auto;
+}
+
+nav ul li {
+    display: inline-flex;
+}
