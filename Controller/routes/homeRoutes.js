@@ -28,35 +28,48 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/login', async (req, res) => {
-
-    if (!req.session.loggedIn) {
-        res.redirect('/login');
-    } else {
-        next();
-    }
-
-}, async (req, res) => {
+router.get('/dashboard', async (req, res) => {
 
     try {
-
-        // find user in db by the email
-        const userData = await User.findByPk({ where: { user_email: req.body.user_email } });
-
-        // use the models checkPassword
-        const validPassword = await userData.checkPassword(req.body.user_password);
-
-        if (!validPassword) {
-            res.status(400).json("Incorrect Password");
-            return;
-        }
-
-
-
+        const userData = await Post.findAll({ where: req.body.user_id })
+        const userPost = userData.map((post) => post.get({ plain: true }))
+        res.render('dashboard', {
+            userPost
+        });
     } catch (err) {
-        console.log(err);
         res.status(500).json(err);
     }
+});
+
+router.get('/login', async (req, res) => {
+
+    //     if (!req.session.loggedIn) {
+    //         res.redirect('/login');
+    //     } else {
+    //         next();
+    //     }
+
+    // }, async (req, res) => {
+
+    //     try {
+
+    //         // find user in db by the email
+    //         const userData = await User.findByPk({ where: { user_email: req.body.user_email } });
+
+    //         // use the models checkPassword
+    //         const validPassword = await userData.checkPassword(req.body.user_password);
+
+    //         if (!validPassword) {
+    //             res.status(400).json("Incorrect Password");
+    //             return;
+    //         }
+
+
+
+    //     } catch (err) {
+    //         console.log(err);
+    //         res.status(500).json(err);
+    //     }
 
     res.render('login');
 

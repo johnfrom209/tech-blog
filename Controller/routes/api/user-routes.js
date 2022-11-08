@@ -95,17 +95,18 @@ router.post('/login', async (req, res) => {
             return;
         }
 
-        const validPassword = await bcrypt.compare(
-            req.body.password,
-            userData.user_password
-        );
+        // const validPassword = await bcrypt.compare(
+        //     req.body.password,
+        //     userData.user_password
+        // );
         // check if the password matches the one in the db
         // if no they are sent this message
-        if (!validPassword) {
+        if (!req.body.user_password) {
             res.status(400).json({ message: 'Login failed. Please try again!' });
             return;
         }
         // if yes they are logged in
+
         res.status(200).json({ message: 'You are now logged in!' });
     } catch (err) {
         res.status(500).json(err);

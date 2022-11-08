@@ -16,7 +16,12 @@ app.use(express.urlencoded({ extended: true }));
 
 const sess = {
     secret: 'Super secret secret',
-    cookie: {},
+    cookie: {
+        maxAge: 120 * 100000,
+        httpOnly: false,
+        secure: false,
+        sameSite: 'strict'
+    },
     resave: false,
     saveUninitialized: true,
     store: new SequelizeStore({
