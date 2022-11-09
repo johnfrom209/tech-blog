@@ -15,9 +15,29 @@
   ![Screenshot](./public/images/tech-blogExample.png)
 
 
-  In this code snippet I requested all the data on products and their associated category and tags. This is done with sequelize and not mysql. 
+  This code snippet highlights how a controller is passing the data to the viewer. In this case its passing all the Post found in the database and parsing it to plain text. Once its handed to handlebars "homepage" it loops through the array to display each post. 
   ```javascript
-  
+  try {
+        const postData = await Post.findAll({
+
+            // include: [{ model: User }, { model: Comment }]
+            include: [{ model: User, attributes: ["user_name"] },
+            {
+                model: Comment, attributes: ["post_text", "created_at"],
+                include: [{ model: User, attributes: ["user_name"] }]
+            }]
+        });
+
+        const posts = postData.map((post) => post.get({ plain: true }));
+
+        console.log(posts);
+        console.log("Logged in: " + req.session.logged_in);
+        //gives handlebar the posts from the db
+        res.render('homepage', {
+            posts,
+            logged_in: req.session.logged_in
+        });
+  }
   ```
   You can view the repo here:
   [Github](https://github.com/johnfrom209/tech-blog)
