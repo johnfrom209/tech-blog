@@ -1,5 +1,6 @@
 const { Post, User, Comment } = require('../../Model/models')
 const router = require('express').Router();
+const withAuth = require('../../utils/auth');
 
 
 // get all posts
@@ -19,9 +20,11 @@ router.get('/', async (req, res) => {
         const posts = postData.map((post) => post.get({ plain: true }));
 
         console.log(posts);
+        console.log("Logged in: " + req.session.logged_in);
         //gives handlebar the posts from the db
         res.render('homepage', {
-            posts
+            posts,
+            logged_in: req.session.logged_in
         });
     } catch (err) {
         res.status(500).json(err);
@@ -31,10 +34,12 @@ router.get('/', async (req, res) => {
 router.get('/dashboard', async (req, res) => {
 
     try {
-        const userData = await Post.findAll({ where: req.body.user_id })
+        console.log("We are in dash");
+        const userData = await Post.findAll({ where: req.session.user_id })
         const userPost = userData.map((post) => post.get({ plain: true }))
         res.render('dashboard', {
-            userPost
+            userPost,
+            logged_in: req.session.logged_in
         });
     } catch (err) {
         res.status(500).json(err);
@@ -43,33 +48,10 @@ router.get('/dashboard', async (req, res) => {
 
 router.get('/login', async (req, res) => {
 
-    //     if (!req.session.loggedIn) {
-    //         res.redirect('/login');
-    //     } else {
-    //         next();
-    //     }
-
-    // }, async (req, res) => {
-
-    //     try {
-
-    //         // find user in db by the email
-    //         const userData = await User.findByPk({ where: { user_email: req.body.user_email } });
-
-    //         // use the models checkPassword
-    //         const validPassword = await userData.checkPassword(req.body.user_password);
-
-    //         if (!validPassword) {
-    //             res.status(400).json("Incorrect Password");
-    //             return;
-    //         }
-
-
-
-    //     } catch (err) {
-    //         console.log(err);
-    //         res.status(500).json(err);
-    //     }
+    if (req.session.logged_in) {
+        res.redirect('/');
+        return;
+    }
 
     res.render('login');
 

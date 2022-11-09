@@ -44,15 +44,18 @@ router.post('/', async (req, res) => {
 
     try {
         //create the user with req.body
+        // but first we need to hash the password
+        const newUser = req.body;
+        // console.log(newUser);
 
-        if (req.body.user_password > 8) {
-            res.status(403).json("Password is not long enough");
-            return;
-        }
+        newUser.user_password = await bcrypt.hash(req.body.user_password, 10);
+        console.log(newUser);
 
-        const userData = await User.create(req.body);
-
-        console.log(userData.user_password);
+        const userData = await User.create(newUser, {
+            user_name: newUser.user_name,
+            user_email: newUser.user_email,
+            user_password: newUser.user_password
+        });
 
         res.status(200).json(`Successfully Added`)
     } catch (err) {
@@ -90,26 +93,37 @@ router.delete('/:id', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const userData = await User.findOne({ where: { user_email: req.body.user_email } });
+
         if (!userData) {
             res.status(404).json({ message: 'Login failed. Please try again!' });
             return;
         }
 
-        // const validPassword = await bcrypt.compare(
-        //     req.body.password,
-        //     userData.user_password
-        // );
+        const validPassword = await userData.checkPassword(req.body.user_password);
+
+        console.log("found email in db");
+
+        console.log(validPassword);
         // check if the password matches the one in the db
         // if no they are sent this message
-        if (!req.body.user_password) {
+        if (!validPassword) {
             res.status(400).json({ message: 'Login failed. Please try again!' });
             return;
         }
         // if yes they are logged in
-
         res.status(200).json({ message: 'You are now logged in!' });
     } catch (err) {
         res.status(500).json(err);
+    }
+})
+
+router.post('/logout', (req, res) => {
+    if (req.session.logged_in) {
+        req.session.destroy(() => {
+            res.status(204).end();
+        })
+    } else {
+        res.status(404).end();
     }
 })
 
