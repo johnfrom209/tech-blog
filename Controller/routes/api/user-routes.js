@@ -99,11 +99,13 @@ router.post('/login', async (req, res) => {
             return;
         }
 
-        const validPassword = await userData.checkPassword(req.body.user_password);
+        console.log("pass: " + req.body.user_password);
 
         console.log("found email in db");
+        const validPassword = userData.checkPassword(req.body.user_password.toString());
 
-        console.log(validPassword);
+
+        console.log("is this a boolean? " + validPassword);
         // check if the password matches the one in the db
         // if no they are sent this message
         if (!validPassword) {
