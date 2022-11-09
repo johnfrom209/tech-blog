@@ -1,8 +1,8 @@
 -- DROP DATABASE
--- DROP DATABASE IF EXISTS blog_db;
+DROP DATABASE IF EXISTS blog_db;
 
-USE dl9wk1svvsnzf2gl;
+-- USE dl9wk1svvsnzf2gl;
 
 -- CREATE DATABASE
--- CREATE DATABASE blog_db;
+CREATE DATABASE blog_db;
 
